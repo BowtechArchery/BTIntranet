@@ -4,12 +4,15 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using OnTarget.Models;
+
 
 namespace OnTarget.Controllers
 {
     public class HomeController : Controller
     {
+       
         public IActionResult Index()
         {
             return View();
