@@ -1,0 +1,79 @@
+﻿@model IEnumerable<OnTarget.Models.SupplyChain.ExclusionItemModel>
+
+@{
+    ViewData["Title"] = "Exclusion Items";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+
+<h1>Exclusion Items</h1>
+
+@(Html.Kendo().Grid<OnTarget.Models.SupplyChain.ExclusionItemModel>()
+        .Name("grid")
+        .Columns(columns =>
+        {
+            columns.Bound(c => c.ItemCode).Width(50);
+            columns.Bound(c => c.ItemDesc).Width(100);
+            columns.Command(command => command.Destroy()).Width(30);
+        })
+        .HtmlAttributes(new { style = "height: 650px;" })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Create();
+            toolbar.Save();
+        })
+        .Editable(editable => editable.Mode(GridEditMode.InCell))
+        .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(true)
+            .ButtonCount(5))
+        .Navigatable()
+        .Sortable()
+        .Scrollable()
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .Batch(true)
+            .PageSize(50)
+            .ServerOperation(false)
+            .Events(events => events.Error("error_handler").Sync("sync_handler"))
+            .Model(model => {
+                model.Id(c => c.ItemCode);
+                model.Field(c => c.ItemDesc).Editable(false);
+            })
+            .Create("ExclusionItems_Insert", "SupplyChain")
+            .Read("ExclusionItems_Load", "SupplyChain")
+            //.Update("ExclusionItems_Update", "SupplyChain")
+            .Destroy("ExclusionItems_Destroy", "SupplyChain")
+    )
+)
+
+<script>
+    $(function () {
+        //Notice that the Name() of the Grid is used to get its client-side instance.
+        var grid = $("#grid").data("kendoGrid");
+    });
+
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+            alert(message);
+        }
+    }
+
+    function sync_handler(e) {
+        this.read();
+    }
+
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

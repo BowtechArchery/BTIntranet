@@ -1,0 +1,18 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "403 - Forbidden";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<h1 class="text-danger">403 - Forbidden</h1>
+<br />
+<h2 class="text-danger">You are trying to access a page you do not have access to.</h2>
+<br />
+<p>If you feel that you have recieved this message in error, please contact the Information Technology department</p>
+
+@if (Model.ShowRequestId)
+{
+    <p>
+        <strong>Request ID:</strong> <code>@Model.RequestId</code>
+    </p>
+}

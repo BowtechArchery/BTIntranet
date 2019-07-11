@@ -1,0 +1,30 @@
+﻿@model OnTarget.Models.Sales.SalesMenuViewModel
+<br /><br /><br />
+<nav class="navbar navbar-expand-lg">
+
+    <button class="navbar-toggler navbar-light bg-light" type="button" data-toggle="collapse" data-target="#navbarSupplyChain" aria-controls="navbarSupplyChain" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupplyChain">
+        <ul class="list-unstyled components">
+            <li class="active">
+                <a class="nav-link dropdown-toggle" data-toggle="collapse" href="#reportsSubmenu" aria-expanded="false">Reports</a>
+                <ul class="collapse list-unstyled" id="reportsSubmenu">
+                    <li>
+                        @*<a class="dropdown-item" asp-area="" asp-controller="Sales" asp-action="Index">View Orders</a>*@
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a class="nav-link dropdown-toggle" data-toggle="collapse" href="#toolsSubmenu" aria-expanded="false">Tools</a>
+                <ul class="collapse list-unstyled" id="toolsSubmenu">
+                    <li>
+                        <a class="dropdown-item" asp-area="" asp-controller="Sales" asp-action="ModifyCustomBowFields">Modify Custom Bow Fields</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+

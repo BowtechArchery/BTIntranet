@@ -7,21 +7,24 @@
 
 
   <ItemGroup>
+    <PackageReference Include="Dapper" Version="1.60.6" />
     <PackageReference Include="JSZip" Version="3.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
-    <PackageReference Include="Telerik.UI.for.AspNet.Core" Version="2019.1.220" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="2.1.1" />
+    <PackageReference Include="Telerik.UI.for.AspNet.Core" Version="2019.2.514" />
   </ItemGroup>
 
 
   <ItemGroup>
-    <Folder Include="Areas\Sales\Controllers\" />
-    <Folder Include="Areas\Sales\Data\" />
-    <Folder Include="Areas\Sales\Models\" />
-    <Folder Include="Areas\SupplyChain\Data\" />
-    <Folder Include="Areas\SupplyChain\Models\" />
-    <Folder Include="Views\Shared\Components\" />
+    <ProjectReference Include="..\OnTargetDataLibrary\OnTargetDataLibrary.csproj" />
+    <ProjectReference Include="..\OnTargetLibrary\OnTargetLibrary.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Models\LabelPrinting\" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,86 @@
+﻿@model IEnumerable<OnTarget.Models.Sales.CustomBowFieldModel>
+
+@{
+    ViewData["Title"] = "Modify Custom Bow Fields";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<h1>Modify Custom Bow Fields</h1>
+
+@(Html.Kendo().Grid<OnTarget.Models.Sales.CustomBowFieldModel>()
+        .Name("grid")
+        .Columns(columns =>
+        {
+            columns.Command(command => command.Edit()).Width(100);
+            columns.Bound(c => c.IndexKey).Hidden();
+            columns.Bound(c => c.PepperiOrderNum).Width(225).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains)));
+            columns.Bound(c => c.ItemCode).Width(225).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains)));
+            columns.Bound(c => c.ItemDesc).Width(275).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains)));
+            columns.Bound(c => c.CustomBowModel).Width(225).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains)));
+            columns.Bound(c => c.CustomBowHand).Width(225).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains)));
+            columns.Bound(c => c.CustomBowDrawWeight).Width(235).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains)));
+            columns.Bound(c => c.CustomBowRiserColor).Width(225).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains)));
+            columns.Bound(c => c.CustomBowLimbColor).Width(225).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains)));
+        })
+        .HtmlAttributes(new { style = "height: 650px; width: 875px" })
+        .Editable(editable => editable.Mode(GridEditMode.PopUp))
+        .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(true)
+            .ButtonCount(5))
+        .Navigatable()
+        .Sortable()
+        .Scrollable()
+        .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
+        .Events(events => events.Edit("edit"))
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .Batch(true)
+            .PageSize(50)
+            .ServerOperation(false)
+            .Events(events => events.Error("error_handler"))
+            .Model(model => model.Id(c => c.IndexKey))
+            .Read(read => read.Action("CustomBowFields_Load", "Sales"))
+            .Update(update => update.Action("CustomBowFields_Update", "Sales"))
+  
+    )
+)
+
+
+<script>
+    $(function () {
+        //Notice that the Name() of the Grid is used to get its client-side instance.
+        var grid = $("#grid").data("kendoGrid");
+    });
+
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+            alert(message);
+        }
+    }
+
+   function edit(e) {
+       e.container.find('#IndexKey').hide();
+       $("label[for='IndexKey']").hide();
+       e.container.find('#PepperiOrderNum').hide();
+       $("label[for='PepperiOrderNum']").hide();
+       e.container.find('#ItemCode').hide();
+       $("label[for='ItemCode']").hide();
+       e.container.find('#ItemDesc').hide();
+       $("label[for='ItemDesc']").hide();
+   }
+    
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

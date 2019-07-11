@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using static OnTargetLibrary.Security.User;
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -8,11 +10,12 @@
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-lux.css" />
-        <link rel="stylesheet" href="~/lib/kendo-ui/styles/kendo.common-material.min.css" />
+
+        @*<link rel="stylesheet" href="~/lib/kendo-ui/styles/kendo.common-material.min.css" />
         <link rel="stylesheet" href="~/lib/kendo-ui/styles/kendo.mobile.all.min.css" />
         <link rel="stylesheet" href="~/lib/kendo-ui/styles/kendo.material.min.css" />
         <link rel="stylesheet" href="~/lib/kendo-ui/styles/kendo.common-nova.min.css" />
-        <link rel="stylesheet" href="~/lib/kendo-ui/styles/kendo.nova.min.css" />
+        <link rel="stylesheet" href="~/lib/kendo-ui/styles/kendo.nova.min.css" />*@
 
         <script src="~/lib/kendo-ui/js/jquery.min.js"></script>
         <script src="~/lib/kendo-ui/js/jszip.min.js"></script>
@@ -24,58 +27,61 @@
     </environment>
 
     <environment exclude="Development">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
-              crossorigin="anonymous"
-              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
+
+        @*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+        asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+        crossorigin="anonymous"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />*@
+
+        @*This needs to be modified to use the online version of the bootstrap lux theme*@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-lux.css" />
 
-        <link rel="stylesheet"
-              href="https://kendo.cdn.telerik.com/2019.1.220/styles/kendo.common-material.min.css"
+        @*<link rel="stylesheet"
+              href="https://kendo.cdn.telerik.com/2019.2.514/styles/kendo.common-material.min.css"
               asp-fallback-href="~/lib/kendo-ui/styles/kendo.common-material.min.css"
               asp-fallback-test-class="k-common-test-class"
               asp-fallback-test-property="opacity" asp-fallback-test-value="0" />
 
         <link rel="stylesheet"
-              href="https://kendo.cdn.telerik.com/2019.1.220/styles/kendo.mobile.all.min.css"
+              href="https://kendo.cdn.telerik.com/2019.2.514/styles/kendo.mobile.all.min.css"
               asp-fallback-href="~/lib/kendo-ui/styles/kendo.mobile.all.min.css"
               asp-fallback-test-class="k-common-test-class"
               asp-fallback-test-property="opacity" asp-fallback-test-value="0" />
 
         <link rel="stylesheet"
-              href="https://kendo.cdn.telerik.com/2019.1.220/styles/kendo.material.min.css"
+              href="https://kendo.cdn.telerik.com/2019.2.514/styles/kendo.material.min.css"
               asp-fallback-href="~/lib/kendo-ui/styles/kendo.material.min.css"
               asp-fallback-test-class="k-common-test-class"
               asp-fallback-test-property="opacity" asp-fallback-test-value="0" />
 
         <link rel="stylesheet"
-              href="https://kendo.cdn.telerik.com/2019.1.220/styles/kendo.common-nova.min.css"
+              href="https://kendo.cdn.telerik.com/2019.2.514/styles/kendo.common-nova.min.css"
               asp-fallback-href="~/lib/kendo-ui/styles/kendo.common-nova.min.css"
               asp-fallback-test-class="k-common-test-class"
               asp-fallback-test-property="opacity" asp-fallback-test-value="0" />
 
         <link rel="stylesheet"
-              href="https://kendo.cdn.telerik.com/2019.1.220/styles/kendo.nova.min.css"
+              href="https://kendo.cdn.telerik.com/2019.2.514/styles/kendo.nova.min.css"
               asp-fallback-href="~/lib/kendo-ui/styles/kendo.nova.min.css"
               asp-fallback-test-class="k-theme-test-class"
-              asp-fallback-test-property="opacity" asp-fallback-test-value="0" />
+              asp-fallback-test-property="opacity" asp-fallback-test-value="0" />*@
 
-        <script src="https://kendo.cdn.telerik.com/2019.1.220/js/jquery.min.js"
+        <script src="https://kendo.cdn.telerik.com/2019.2.514/js/jquery.min.js"
                 asp-fallback-src="~/lib/kendo-ui/js/jquery.min.js"
-                asp-fallback-test="asp-fallback-test=" window.jQuery">
+                asp-fallback-test="window.jQuery">
         </script>
 
-        <script src="https://kendo.cdn.telerik.com/2019.1.220/js/jszip.min.js"
+        <script src="https://kendo.cdn.telerik.com/2019.2.514/js/jszip.min.js"
                 asp-fallback-src="~/lib/kendo-ui/js/jszip.min.js">
         </script>
 
         @* Place Kendo UI scripts after jQuery *@
-        <script src="https://kendo.cdn.telerik.com/2019.1.220/js/kendo.all.min.js"
+        <script src="https://kendo.cdn.telerik.com/2019.2.514/js/kendo.all.min.js"
                 asp-fallback-src="~/lib/kendo-ui/js/kendo.all.min.js"
                 asp-fallback-test="window.kendo">
         </script>
-        <script src="https://kendo.cdn.telerik.com/2019.1.220/js/kendo.aspnetmvc.min.js"
+        <script src="https://kendo.cdn.telerik.com/2019.2.514/js/kendo.aspnetmvc.min.js"
                 asp-fallback-src="~/lib/kendo-ui/js/kendo.aspnetmvc.min.js"
                 asp-fallback-test="kendo.data.transports['aspnetmvc-ajax']">
         </script>
@@ -83,6 +89,7 @@
     </environment>
 
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/all.css" />
 
 </head>
 <body>
@@ -109,16 +116,15 @@
                             <a class="dropdown-item" asp-area="" asp-controller="QualityAssurance" asp-action="Index">Quality Assurance</a>
                             <a class="dropdown-item" asp-area="" asp-controller="Sales" asp-action="Index">Sales</a>
                             <a class="dropdown-item" asp-area="" asp-controller="Shipping" asp-action="Index">Shipping</a>
-                            @*<a class="dropdown-item" asp-area="" asp-controller="SupplyChain" asp-action="Index">Supply Chain</a>*@
-                            <a class="dropdown-item" asp-area="SupplyChain" asp-controller="SupplyChain" asp-action="Index">Supply Chain</a>
+                            <a class="dropdown-item" asp-area="" asp-controller="SupplyChain" asp-action="Index">Supply Chain</a>
                             <a class="dropdown-item" asp-area="" asp-controller="Warranty" asp-action="Index">Warranty</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#">Administration</a>
                         </div>
                     </li>
-                    <li class="nav-item">
+                    @*<li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="About">About</a>
-                    </li>
+                    </li>*@
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
                     </li>
@@ -127,32 +133,61 @@
                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                     </li>
                 </ul>
-                <p class="nav navbar-text navbar-right">Hello, @User.Identity.Name!</p>
+                <p class="nav navbar-text navbar-right">Hello, @OnTargetLibrary.Security.User.GetUserFullName(@User.Identity.Name)!</p>
 
                 @*<form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="text" placeholder="Search">
-                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-                </form>*@
+                            <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                    </form>*@
             </div>
         </nav>
     </header>
 
+    @{
+        var area = ViewContext.RouteData.Values["area"];
+        var controller = ViewContext.RouteData.Values["controller"];
+        var action = ViewContext.RouteData.Values["Action"];
+    }
 
-
-    <div class="container">
-        <partial name="_CookieConsentPartial" />
-        <main role="main" class="pb-3">
-
-            @RenderBody()
-            
-            <div style="width: 200px;">
-                @if (IsSectionDefined("MyContentHeader"))
-                {
-                    @RenderSection("MyContentHeader")
-                }
+    @if ((string)controller == "SupplyChain")
+    {
+        <div class="container-department">
+            <partial name="_CookieConsentPartial" />
+            <div class="row">
+                <div class="col-md-2">
+                    @await Component.InvokeAsync("SupplyChainMenu")
+                </div>
+                <div class="col-md-10">
+                    @RenderBody()
+                </div>
             </div>
-        </main>
-    </div>
+        </div>
+    }
+    else if ((string)controller == "Sales")
+    {
+        <div class="container-department">
+            <partial name="_CookieConsentPartial" />
+            <div class="row">
+                <div class="col-md-2">
+                    @await Component.InvokeAsync("SalesMenu")
+                </div>
+                <div class="col-md-10">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="container">
+            <partial name="_CookieConsentPartial" />
+            <div class="row">
+                <div class="col-md-12">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    }
 
     <footer class="border-top footer text-muted">
         <div class="container" style="color: #c8002d">
@@ -170,8 +205,9 @@
         @* Place Kendo UI scripts after jQuery *@
         <script src="~/lib/kendo-ui/js/kendo.all.min.js"></script>
         <script src="~/lib/kendo-ui/js/kendo.aspnetmvc.min.js"></script>
+
     </environment>
-   
+
     <environment exclude="Development">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
                 asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
@@ -187,29 +223,36 @@
                 integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
         </script>
 
-        <script src="https://kendo.cdn.telerik.com/2019.1.220/js/jquery.min.js"
+        @*<script src="https://kendo.cdn.telerik.com/2019.2.514/js/jquery.min.js"
                 asp-fallback-src="~/lib/kendo-ui/js/jquery.min.js"
-                asp-fallback-test="asp-fallback-test="window.jQuery">
+                asp-fallback-test="asp-fallback-test=" window.jQuery">
+        </script>*@
+
+        <script src="https://kendo.cdn.telerik.com/2019.2.514/js/jquery.min.js"
+                asp-fallback-src="~/lib/kendo-ui/js/jquery.min.js"
+                asp-fallback-test="window.jQuery">
         </script>
 
-        <script src="https://kendo.cdn.telerik.com/2019.1.220/js/jszip.min.js"
+        <script src="https://kendo.cdn.telerik.com/2019.2.514/js/jszip.min.js"
                 asp-fallback-src="~/lib/kendo-ui/js/jszip.min.js">
         </script>
 
-        @* Place Kendo UI scripts after jQuery *@
-        <script src="https://kendo.cdn.telerik.com/2019.1.220/js/kendo.all.min.js"
+
+        @*Place Kendo UI scripts after jQuery*@
+        <script src="https://kendo.cdn.telerik.com/2019.2.514/js/kendo.all.min.js"
                 asp-fallback-src="~/lib/kendo-ui/js/kendo.all.min.js"
                 asp-fallback-test="window.kendo">
         </script>
-        <script src="https://kendo.cdn.telerik.com/2019.1.220/js/kendo.aspnetmvc.min.js"
+        <script src="https://kendo.cdn.telerik.com/2019.2.514/js/kendo.aspnetmvc.min.js"
                 asp-fallback-src="~/lib/kendo-ui/js/kendo.aspnetmvc.min.js"
                 asp-fallback-test="kendo.data.transports['aspnetmvc-ajax']">
         </script>
 
     </environment>
-    
+
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
+
 </body>
 </html>

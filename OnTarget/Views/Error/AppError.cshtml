@@ -1,0 +1,18 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "500 - Application Error";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<h1 class="text-danger">500 - Application Error</h1>
+<br />
+<h2 class="text-danger">An error occurred while executing your request.</h2>
+<br />
+<p>Please contact the Information Technology department if you need assistance.</p>
+
+@if (Model.ShowRequestId)
+{
+    <p>
+        <strong>Request ID:</strong> <code>@Model.RequestId</code>
+    </p>
+}

@@ -1,0 +1,75 @@
+﻿@model OnTarget.Models.SupplyChain.DecorationTicketModel
+
+@{
+    ViewData["Title"] = "Generate Decoration Tickets";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+
+<h1>Generate Decoration Tickets</h1>
+
+<br />
+
+<div class="row">
+    <div class="col-md-10">
+        <form asp-action="GenerateDecorationTicket">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label asp-for="WorkOrders" class="control-label"></label>
+                            <textarea asp-for="WorkOrders" rows="20" cols="25" class="form-control"></textarea>
+                            <span asp-validation-for="WorkOrders" class="text-danger" style="width: 500px; display:block;"></span>
+
+                            <br />
+
+                            <select asp-for="SelectedPrinterID" asp-items="@Model.LabelPrinters" class="form-control" style="height: 60px;">
+                                <option selected>Select Printer</option>
+                            </select>
+
+                            <br />
+
+                            <span asp-validation-for="SelectedPrinterID" class="text-danger" style="width: 500px; display: block;"></span>
+
+                            <br /><br />
+
+                            <div class="form-group">
+                                <input type="submit" value="Print Decoration Tickets" class="btn btn-primary" />
+                            </div>
+
+                        </div>
+                        <div class="col-md-5">
+                            <label asp-for="CompletionDate" class="control-label"></label>
+                            @(Html.Kendo().DatePicker()
+                                .Name("CompletionDate")
+                                .Value(DateTime.Now)
+                                .HtmlAttributes(new { style = "width: 75%", title = "Completion Date" })
+                                .DateInput()
+                            )
+                            <span asp-validation-for="CompletionDate" class="text-danger" style="width: 500px; display:block;"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (ViewData["Messages"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@ViewData["Messages"]")
+
+            };
+    </script>
+}
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}
