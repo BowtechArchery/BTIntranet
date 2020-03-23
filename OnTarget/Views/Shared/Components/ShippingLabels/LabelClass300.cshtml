@@ -1,0 +1,59 @@
+﻿@model OnTarget.Models.Shipping.ShippingLabelsViewModel
+
+<p style="color:black">Shipping Restock Case Label (300)</p>
+
+<label class="control-label">Work Order Number</label>
+
+<br />
+
+@(Html.Kendo().AutoComplete()
+             .Name("WorkOrderNumber")
+             .DataTextField("WorkOrderNumber")
+             .Filter("contains")
+             .Placeholder("Enter Work Order Number...")
+             .MinLength(6)
+             .HtmlAttributes(new { required = "required", style = "width:50%;height:50px" })
+             .DataSource(source =>
+             {
+                 source
+                        .Read(read =>
+                        {
+                            read.Action("SearchWorkOrderNumbers", "Shipping")
+                            .Data("onAdditionalWorkOrderNumberData");
+                        })
+             .ServerFiltering(true);
+            })
+)
+
+<br />
+
+<span class="k-invalid-msg" data-for="WorkOrderNumber" style="width: 500px; display:inline-block;"></span>
+
+<br />
+<br />
+
+<label class="control-label">Printer</label>
+<select asp-for="SelectedPrinterID" asp-items="@Model.LabelPrinters" class="form-control" style="height: 60px;" required title="Please Select a Printer" oninvalid="this.setCustomValidity('Please Select a Printer')" oninput="this.setCustomValidity('')">
+    <option value="" selected>Select Printer</option>
+</select>
+<span asp-validation-for="SelectedPrinterID" class="text-danger" style="width: 500px; display: block;"></span>
+
+<br />
+<br />
+
+<div class="form-group">
+    <input type="submit" value="Print Label(s)" class="btn btn-primary" />
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
+<script src="~/lib/kendo-ui/js/kendo.all.min.js"></script>
+<script src="~/lib/kendo-ui/js/kendo.aspnetmvc.min.js"></script>

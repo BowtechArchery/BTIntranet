@@ -10,7 +10,7 @@ namespace OnTarget.ViewComponents
 {
     public class SupplyChainMenuViewComponent : ViewComponent
     {
-        public async Task<IViewComponentResult> InvokeAsync()
+        public IViewComponentResult Invoke()
         {
 
             SupplyChainMenuViewModel supplychainmenu = new SupplyChainMenuViewModel();

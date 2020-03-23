@@ -1,0 +1,142 @@
+﻿@model IEnumerable<OnTarget.Models.Sales.CustomerCoordinatesModel>
+
+@{
+    ViewData["Title"] = "Customer Coordinates";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+
+<h1>Customer Coordinates</h1>
+
+@(Html.Kendo().Window()
+    .Name("window")
+    .Draggable()
+    .Resizable()
+    .Width(500)
+    .Actions(actions => actions.Close())
+    .Events(ev => ev.Close("onClose"))
+    .Visible(false)
+
+)
+
+@(Html.Kendo().Grid<OnTarget.Models.Sales.CustomerCoordinatesModel>
+    ()
+    .Name("grid")
+    .Columns(columns =>
+    {
+    columns.Command(command => command.Edit()).Width(100);
+    columns.Bound(c => c.Site).Width(120).HeaderHtmlAttributes(new { style = "text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.CustNum).Width(120).HeaderHtmlAttributes(new { style = "text-align: center; overflow: visible; white-space: normal" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.CustName).Width(300).HeaderHtmlAttributes(new { style = "text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(250).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.Address).Width(300).HeaderHtmlAttributes(new { style = "text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(250).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.City).Width(120).HeaderHtmlAttributes(new { style = "text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.State).Width(120).HeaderHtmlAttributes(new { style = "text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.Zip).Width(120).HeaderHtmlAttributes(new { style = "text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.Country).Width(120).HeaderHtmlAttributes(new { style = "text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.Latitude).Width(120).HeaderHtmlAttributes(new { style = "text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.Longitude).Width(120).HeaderHtmlAttributes(new { style = "text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Command(command => command.Destroy()).Width(100);
+    })
+    .HtmlAttributes(new { style = "height: 650px; width: 1250px" })
+    .ToolBar(toolbar =>
+    {
+    toolbar.Create();
+    toolbar.Save();
+    })
+    .Editable(editable => editable.Mode(GridEditMode.PopUp))
+    .Pageable(pageable => pageable
+    .Refresh(true)
+    .PageSizes(true)
+    .ButtonCount(5))
+    .Navigatable()
+    .Sortable()
+    .Scrollable()
+    .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
+    .Events(events => events.Edit("edit"))
+    .DataSource(dataSource => dataSource
+    .Ajax()
+    .Batch(true)
+    .PageSize(50)
+    .ServerOperation(false)
+    .Events(events => events.Error("error_handler").Sync("sync_handler"))
+    .Model(model =>
+    {
+    model.Id(c => c.CustNum);
+    model.Field(c => c.Latitude).Editable(true);
+    model.Field(c => c.Longitude).Editable(true);
+
+    })
+    .Create(update => update.Action("CustomerCoordinates_Insert", "Sales"))
+    .Read("CustomerCoordinates_Load", "Sales")
+    .Update("CustomerCoordinates_Update", "Sales")
+    .Destroy("CustomerCoordinates_Destroy", "Sales")
+    )
+    )
+
+<style>
+    .k-widget {
+        font-size: 13px
+    }
+
+    .k-grid {
+        font-size: 9px;
+    }
+</style>
+
+<script>
+    $(function () {
+        //Notice that the Name() of the Grid is used to get its client-side instance.
+        var grid = $("#grid").data("kendoGrid");
+    });
+
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+
+            $("#window").data("kendoWindow").center().title("Customer Coordinates").content(message + '<br /><br /><button id="closeButton" onclick="closeWindow()" class="k-button">Close</button>').open();
+            $("#undo").hide();
+        }
+    }
+
+    function sync_handler(e) {
+        this.read();
+    }
+
+    function edit(e) {
+        e.container.find('#Site').hide();
+        $("label[for='Site']").hide();
+        e.container.find('#CustName').hide();
+        $("label[for='CustName']").hide();
+        e.container.find('#Address').hide();
+        $("label[for='Address']").hide();
+        e.container.find('#City').hide();
+        $("label[for='State']").hide();
+        e.container.find('#State').hide();
+        $("label[for='City']").hide();
+        e.container.find('#Zip').hide();
+        $("label[for='Zip']").hide();
+        e.container.find('#Country').hide();
+        $("label[for='Country']").hide();
+    }
+
+    function onClose() {
+        $("#undo").show();
+    }
+
+    function closeWindow() {
+        $("#window").data("kendoWindow").close();
+    }
+
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

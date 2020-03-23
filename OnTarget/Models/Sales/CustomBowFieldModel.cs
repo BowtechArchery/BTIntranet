@@ -39,5 +39,13 @@ namespace OnTarget.Models.Sales
         [Required(AllowEmptyStrings = false, ErrorMessage = "Please Enter a Limb Color")]
         [Display(Name = "Limb Color")]
         public string CustomBowLimbColor { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Please Enter a Grip")]
+        [Display(Name = "Grip")]
+        public string CustomBowGrip { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Please Enter an Orbit")]
+        [Display(Name = "Orbit")]
+        public string CustomBowOrbit { get; set; }
     }
 }

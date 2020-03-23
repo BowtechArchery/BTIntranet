@@ -1,0 +1,148 @@
+﻿@model OnTarget.Models.Manufacturing.ManufacturingLabelsViewModel
+
+@{
+    ViewData["Title"] = "Manufacturing Labels";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions{
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
+
+<input type="hidden" id="RequestVerificationToken"
+       name="RequestVerificationToken" value="@GetAntiXsrfRequestToken()">
+
+<br />
+
+<h1>Generate Manufacturing Labels</h1>
+
+<br />
+
+<div class="row">
+    <div class="col-md-10">
+
+        <form kendo-validator="true" asp-action="ManufacturingLabels" id="partialformAjaxWithComponent" method="post" asp-controller="Manufacturing">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-5">
+
+                            <label asp-for="SelectedClassID" class="control-label"></label>
+                            <select asp-for="SelectedClassID" asp-items="@Model.LabelClasses" class="form-control" id="selectedClassID" onchange="loadComponentView()" style="height: 60px;">
+                                <option selected>Select Label Class</option>
+                            </select>
+
+                            <br />
+
+                            <span asp-validation-for="SelectedClassID" class="text-danger" style="width: 500px; display: block;"></span>
+
+                            <br /><br />
+
+                            <div id="divLabelClass"></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (ViewData["Messages"] != null)
+{
+
+    @(Html.Kendo().Window()
+    .Name("window")
+    .Draggable()
+    .Resizable()
+    .Width(500)
+    .Actions(actions => actions.Close())
+    .Events(ev => ev.Close("onClose"))
+    .Events(eve => eve.Activate("centerKendoWindow"))
+    )
+
+    <script>
+
+        $(document).ready(function () {
+            $("#undo").bind("click", function () {
+                $("#window").data("kendoWindow").open();
+                $("#undo").hide();
+            });
+
+        });
+
+        function onClose() {
+            $("#undo").show();
+        }
+
+        function centerKendoWindow(e) {
+
+            this.center();
+            this.title("Warranty Labels");
+            this.content("@ViewData["Messages"]" + '<br /><br /><button id="closeButton" onclick="closeWindow()" class="k-button">Close</button>');
+        }
+
+        function closeWindow() {
+             $("#window").data("kendoWindow").close();
+        }
+
+    </script>
+
+}
+
+<script>
+
+    function loadComponentView() {
+
+        var paramsFromForm = {};
+        $.each($("#partialformAjaxWithComponent").serializeArray(), function (index, value) {
+            paramsFromForm[value.name] = paramsFromForm[value.name] ? paramsFromForm[value.name] || value.value : value.value;
+        });
+
+        var componentData = {};
+
+        componentData.standardValidation = paramsFromForm;
+
+        var selection = document.getElementById('selectedClassID');
+        componentData.selectedClassID = selection.value;
+
+        //console.log(componentData);
+
+        $.ajax({
+            url: window.location.origin + "/Manufacturing/LoadManufacturingLabelsViewComponent",
+            type: "post",
+            dataType: "json",
+            beforeSend: function (x) {
+                if (x && x.overrideMimeType) {
+                    x.overrideMimeType("application/json;charset=UTF-8");
+                };
+                x.setRequestHeader('RequestVerificationToken', document.getElementById('RequestVerificationToken').value);
+            },
+            data: componentData,
+            complete: function (result) {
+                //console.log(result.responseText);
+                $("#divLabelClass").html(result.responseText);
+            }
+        });
+    };
+
+    function onAdditionalData() {
+        return {
+            text: $("#PartNumber").val()
+        };
+    }
+
+</script>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}

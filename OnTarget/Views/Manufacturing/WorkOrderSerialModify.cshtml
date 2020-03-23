@@ -1,0 +1,104 @@
+﻿@model IEnumerable<OnTarget.Models.Manufacturing.WorkOrderSerialModel>
+
+@{
+    ViewData["Title"] = "Modify Work Order Serial Number";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+
+<h1>Modify Work Order Serial Number</h1>
+
+<br />
+
+@(Html.Kendo().Grid<OnTarget.Models.Manufacturing.WorkOrderSerialModel>()
+        .Name("grid")
+        .Columns(columns =>
+        {
+            columns.Command(command => command.Edit()).Width(50);
+            columns.Bound(c => c.ID).Hidden();
+            columns.Bound(c => c.SerialNumber).Width(100).HeaderHtmlAttributes(new { style = "text-align: center; overflow: visible; white-space: normal" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(110).SuggestionOperator(FilterType.Contains)));
+            columns.Bound(c => c.WorkOrderNumber).Width(100).HeaderHtmlAttributes(new { style = "text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(110).SuggestionOperator(FilterType.Contains)));
+            columns.Bound(c => c.BuildDate).Width(100).HeaderHtmlAttributes(new { style = "text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(110).SuggestionOperator(FilterType.Contains)));
+            columns.Bound(c => c.ItemCode).Width(100).HeaderHtmlAttributes(new { style = "text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(110).SuggestionOperator(FilterType.Contains)));
+            columns.Bound(c => c.ItemDescription).Width(100).HeaderHtmlAttributes(new { style = "text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(110).SuggestionOperator(FilterType.Contains)));
+            columns.Bound(c => c.BuilderName).Width(100).HeaderHtmlAttributes(new { style = "text-align: center; overflow: visible; white-space: normal" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(110).SuggestionOperator(FilterType.Contains)));
+        })
+        .HtmlAttributes(new { style = "height: 650px; width: 1200px" })
+        .Editable(editable => editable.Mode(GridEditMode.PopUp))
+        .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(true)
+            .ButtonCount(5))
+        .Navigatable()
+        .Sortable()
+        .Scrollable()
+        .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
+        .Events(events => events.Edit("edit"))
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .Batch(true)
+            .PageSize(50)
+            .ServerOperation(false)
+            .Events(events => events.Error("error_handler"))
+            .Model(model => model.Id(c => c.SerialNumber))
+            .Read(read => read.Action("WorkOrderSerial_Load", "Manufacturing"))
+            .Update(update => update.Action("WorkOrderSerial_Update", "Manufacturing"))
+
+    )
+)
+
+<style>
+    .k-widget {
+        font-size: 13px
+    }
+
+    .k-grid {
+        font-size: 9px;
+    }
+</style>
+
+<script>
+    $(function () {
+        //Notice that the Name() of the Grid is used to get its client-side instance.
+        var grid = $("#grid").data("kendoGrid");
+    });
+
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+
+            $("#window").data("kendoWindow").center().title("Modify Work Order Serial").content(message + '<br /><br /><button id="closeButton" onclick="closeWindow()" class="k-button">Close</button>').open();
+            $("#undo").hide();
+        }
+    }
+
+    function edit(e) {
+       e.container.find('#ID').hide();
+       $("label[for='ID']").hide();
+       e.container.find('#ItemCode').hide();
+       $("label[for='ItemCode']").hide();
+       e.container.find('#ItemDescription').hide();
+       $("label[for='ItemDescription']").hide();
+   }
+
+   function onClose() {
+        $("#undo").show();
+   }
+
+   function closeWindow() {
+        $("#window").data("kendoWindow").close();
+   }
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

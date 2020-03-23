@@ -17,5 +17,7 @@ namespace OnTargetDataLibrary.Models.SupplyChain
         public string SalesOrderNumber { get; set; }
 
         public string IssuedBy { get; set; }
+
+        public string ItemCategory { get; set; }
     }
 }

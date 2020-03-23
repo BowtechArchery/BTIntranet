@@ -15,5 +15,9 @@ namespace OnTargetDataLibrary.Models.SupplyChain
         public string BowRiserColor { get; set; }
 
         public string BowLimbColor { get; set; }
+
+        public string BowGrip { get; set; }
+
+        public string BowOrbit { get; set; }
     }
 }

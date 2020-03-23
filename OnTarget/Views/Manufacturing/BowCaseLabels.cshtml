@@ -1,0 +1,268 @@
+﻿@model OnTarget.Models.Manufacturing.BowCaseLabelViewModel
+
+<script src="~/js/site.js" asp-append-version="true"></script>
+
+@{
+    ViewData["Title"] = "Bow Case Labels";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions{
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
+
+<input type="hidden" id="RequestVerificationToken"
+       name="RequestVerificationToken" value="@GetAntiXsrfRequestToken()">
+
+<br />
+
+<h1>Bow Case Labels</h1>
+
+<br />
+
+<div class="row">
+    <div class="col-md-10">
+
+        <form kendo-validator="true" asp-action="BowCaseLabels" id="PrintBowCaseLabels" method="post" asp-controller="Manufacturing">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-9">
+
+                            <div class="card mb-3">
+                                <h3 id="WorkOrderNumber" class="card-header" style="color:black"></h3>
+
+                                <div class="card-body">
+                                    <h5 id="PartNumber" class="card-title" style="color:black"></h5>
+
+                                    <h5 id="PartDescription" class="card-title" style="color:black"></h5>
+
+                                    <label class="control-label" style="color:black">Work Order Quantity:</label>
+                                    <label id="Quantity" class="control-label" style="color:black"></label>
+
+                                    <hr class="my-4">
+
+                                    <label class="control-label">Current Case Number:&nbsp;</label>
+                                    <label id="CurrentCaseNumber" class="control-label"></label>
+
+                                    <br />
+                                    <br />
+
+                                    <label class="control-label">Serial Number:</label>
+                                    <input id="SerialNumber" type="text" value="" style="width: 175px; background-color:#F6F6F6; border: 1px solid #D1D1D1" class="form-control" tabindex="1" @*oninvalid="this.setCustomValidity('Please Enter a Serial Number')" oninput="this.setCustomValidity('')"*@>
+                                    <span asp-validation-for="SerialNumber" class="text-danger" style="width: 500px; display:block; "></span>
+
+                                    <br />
+
+                                    <label class="control-label">Bow Builder:</label>
+                                    <input id="BowBuilder" type="text" value="" style="width: 175px; background-color:#F6F6F6; border: 1px solid #D1D1D1" class="form-control" tabindex="2" @*oninvalid="this.setCustomValidity('Please Enter a Bow Builder')" oninput="this.setCustomValidity('')"*@>
+                                    <span asp-validation-for="BowBuilder" class="text-danger" style="width: 500px; display:block;"></span>
+
+                                    <hr class="my-4">
+
+                                    <label class="control-label">Printer:&nbsp;</label>
+                                    <label id="PrinterName" class="control-label"></label>
+
+                                    <hr class="my-4">
+
+                                    <label class="control-label" style="font-size: small; color:black">Status:&nbsp;</label>
+                                    <label id="Status" class="control-label" style="font-size: small; color:black"></label>
+
+                                </div>
+
+                                <div class="card-footer text-muted" style="text-align:center">
+                                    <input type="button" value="Print Case Label" class="btn btn-primary" id="btnAdd" tabindex="3" onfocus="return PrintBowCaseLabel();" onclick="return PrintBowCaseLabel();" />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@(Html.Kendo().Window()
+   .Name("windowWorkOrderComplete")
+   .Draggable()
+   .Resizable()
+   .Width(500)
+   .Visible(false)
+   .Actions(actions => actions.Close())
+   .Events(ev => ev.Close("onClose"))
+   .Events(eve => eve.Activate("centerKendoWindowWorkOrderComplete"))
+)
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}
+
+<script>
+
+    SessionUpdater.Setup('@Url.Action("KeepSessionAlive","Manufacturing")');
+
+    //Load Data in form when document is ready
+    $(document).ready(function () {
+
+        loadData();
+
+        $('#SerialNumber').focus();
+
+    });
+
+    function openWindowWorkOrderComplete() {
+        $("#windowWorkOrderComplete").data("kendoWindow").open();
+    };
+
+    function onClose() {
+        $("#undo").show();
+    }
+
+    function centerKendoWindowWorkOrderComplete(e) {
+
+        this.center();
+        this.title("Bow Case Labels");
+        this.content("Printing is complete for this Work Order. Click Next Work Order to start a new Work Order or Cancel to stay on current Work Order." + '<br /><br /><button id="nextWorkOrderButton" onclick="nextWorkOrder()" class="k-button">Next Work Order</button>&nbsp;&nbsp;<button id="cancelButton" onclick="closeWindow()" class="k-button">Cancel</button>');
+    }
+
+    function closeWindow() {
+            $("#windowWorkOrderComplete").data("kendoWindow").close();
+    }
+
+    function nextWorkOrder() {
+        window.location.href = "https://OnTarget/Manufacturing/BowCaseLabelsSelectWorkOrder";
+    }
+
+    //Load Data function
+    function loadData() {
+
+        var workOrderNumber = '@Model.WorkOrderNumber';
+
+        $.ajax({
+            url: "/Manufacturing/LoadBowCaseLabelWorkOrderData/?workOrderNumber=" + workOrderNumber,
+            type: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (result) {
+                $.each(result, function (key, item) {
+
+                    $("#WorkOrderNumber").text(item.WorkOrderNumber);
+                    $("#PartNumber").text(item.PartNumber);
+                    $("#PartDescription").text(item.PartDescription);
+                    $("#Quantity").text(item.Quantity);
+                    $("#CurrentCaseNumber").text(item.CurrentCaseNumber);
+                    $("#PrinterName").text('@Model.PrinterDescription');
+
+                    $('#SerialNumber').focus();
+
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function PrintBowCaseLabel() {
+
+        var res = validate();
+
+        if (res == false)
+        {
+            return false;
+        }
+
+        var paramsFromForm = {};
+        $.each($("#PrintBowCaseLabels").serializeArray(), function (index, value) {
+            paramsFromForm[value.name] = paramsFromForm[value.name] ? paramsFromForm[value.name] || value.value : value.value;
+        });
+
+        var componentData = {};
+
+        componentData.standardValidation = paramsFromForm;
+
+        var workOrderNumber = '@Model.WorkOrderNumber';
+        var currentCaseNumber = $('#CurrentCaseNumber').text();
+        var serialNumber = $('#SerialNumber').val();
+        var bowBuilder = $('#BowBuilder').val();
+        var selectedPrinterID = '@Model.SelectedPrinterID';
+
+        componentData.WorkOrderNumber = workOrderNumber;
+        componentData.CurrentCaseNumber = currentCaseNumber;
+        componentData.SerialNumber = serialNumber;
+        componentData.BowBuilder = bowBuilder;
+        componentData.SelectedPrinterID = selectedPrinterID;
+
+        $.ajax({
+            async: false,
+            url: "/Manufacturing/PrintBowCaseLabel",
+            type: "post",
+            dataType: "json",
+            beforeSend: function (x) {
+                if (x && x.overrideMimeType) {
+                    x.overrideMimeType("application/json;charset=UTF-8");
+                };
+                x.setRequestHeader('RequestVerificationToken', document.getElementById('RequestVerificationToken').value);
+            },
+            data: componentData,
+            success: function (result) {
+
+                loadData();
+
+                $('#SerialNumber').val("");
+                $('#BowBuilder').val("");
+                $("#Status").text(result.message);
+
+                //if the work order is complete then result.workOrderCompleteMessage will pass 1 from the controller
+                if (result.workOrderCompleteMessage == 1) {
+                    openWindowWorkOrderComplete();
+                }
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        })
+
+
+    };
+
+    function validate() {
+
+        var isValid = true;
+
+        if ($('#SerialNumber').val().trim() == "") {
+
+            document.getElementById('SerialNumber').setCustomValidity('Please Enter a Serial Number');
+            document.getElementById('SerialNumber').reportValidity();
+
+            isValid = false;
+        }
+
+        if ($('#BowBuilder').val().trim() == "") {
+
+            document.getElementById('BowBuilder').setCustomValidity('Please Enter a Bow Builder');
+            document.getElementById('BowBuilder').reportValidity();
+
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+</script>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+

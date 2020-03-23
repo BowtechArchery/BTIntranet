@@ -9,6 +9,7 @@
     <div class="collapse navbar-collapse" id="navbarSupplyChain">
         <ul class="list-unstyled components">
             <li class="active">
+                <h6>Sales Menu</h6>
                 <a class="nav-link dropdown-toggle" data-toggle="collapse" href="#reportsSubmenu" aria-expanded="false">Reports</a>
                 <ul class="collapse list-unstyled" id="reportsSubmenu">
                     <li>
@@ -19,6 +20,9 @@
             <li>
                 <a class="nav-link dropdown-toggle" data-toggle="collapse" href="#toolsSubmenu" aria-expanded="false">Tools</a>
                 <ul class="collapse list-unstyled" id="toolsSubmenu">
+                    <li>
+                        <a class="dropdown-item" asp-area="" asp-controller="Sales" asp-action="CustomerCoordinates">Customer Coordinates</a>
+                    </li>
                     <li>
                         <a class="dropdown-item" asp-area="" asp-controller="Sales" asp-action="ModifyCustomBowFields">Modify Custom Bow Fields</a>
                     </li>

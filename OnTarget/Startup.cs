@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using DinkToPdf;
+using DinkToPdf.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json.Serialization;
 using OnTargetLibrary.Security;
+using PDF_Generator.Utility;
 
 namespace OnTarget
 {
@@ -41,16 +44,36 @@ namespace OnTarget
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+
+            var customAssemblyLoadContext = new CustomAssemblyLoadContext();
+            customAssemblyLoadContext.LoadUnmanagedLibrary(Path.Combine(Directory.GetCurrentDirectory(), "libwkhtmltox.dll"));
+
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                // Make the session cookie essential
+                options.Cookie.IsEssential = true;
+            });
+
+
             services
                 .AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
-            
+              
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Administration", policy => policy.Requirements.Add(new IntranetSecurityGroupRequirement("Administration - Intranet")));
-                options.AddPolicy("Supply Chain", policy => policy.Requirements.Add(new IntranetSecurityGroupRequirement("Supply Chain - Intranet")));
+                options.AddPolicy("Manufacturing", policy => policy.Requirements.Add(new IntranetSecurityGroupRequirement("Manufacturing - Intranet")));
+                options.AddPolicy("Manufacturing Admin", policy => policy.Requirements.Add(new IntranetSecurityGroupRequirement("Manufacturing Admin - Intranet")));
                 options.AddPolicy("Sales", policy => policy.Requirements.Add(new IntranetSecurityGroupRequirement("Sales - Intranet")));
+                options.AddPolicy("Shipping", policy => policy.Requirements.Add(new IntranetSecurityGroupRequirement("Shipping - Intranet")));
+                options.AddPolicy("Supply Chain", policy => policy.Requirements.Add(new IntranetSecurityGroupRequirement("Supply Chain - Intranet")));
+                options.AddPolicy("Warranty", policy => policy.Requirements.Add(new IntranetSecurityGroupRequirement("Warranty - Intranet")));
             });
+
             services.AddSingleton<IAuthorizationHandler, IntranetSecurityGroupHandler>();
 
             services.AddAuthentication(IISDefaults.AuthenticationScheme);
@@ -121,12 +144,12 @@ namespace OnTarget
                 //    areaName: "SupplyChain",
                 //    template: "SupplyChain/{controller=SupplyChain}/{action=Index}/{id?}");
 
-            //need route and attribute on controller: [Area("Blogs")]
-             routes.MapRoute(name: "mvcAreaRoute",
-                                template: "{area:exists}/{controller=Home}/{action=Index}");
+                //need route and attribute on controller: [Area("Blogs")]
+                routes.MapRoute(name: "mvcAreaRoute",
+                                   template: "{area:exists}/{controller=Home}/{action=Index}");
 
-            // default route for non-areas
-            routes.MapRoute(
+                // default route for non-areas
+                routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
 

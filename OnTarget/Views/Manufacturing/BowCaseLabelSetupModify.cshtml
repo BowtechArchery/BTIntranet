@@ -1,0 +1,120 @@
+﻿@model OnTarget.Models.Manufacturing.BowCaseLabelWorkOrderModel
+
+@{
+    ViewData["Title"] = "Bow Case Label Setup Modify";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<br />
+
+<h1>Bow Case Label Setup Modify</h1>
+
+<br />
+
+@(Html.Kendo().Window()
+    .Name("window")
+    .Draggable()
+    .Resizable()
+    .Width(500)
+    .Actions(actions => actions.Close())
+    .Events(ev => ev.Close("onClose"))
+    .Visible(false)
+
+)
+
+@(Html.Kendo().Grid<OnTarget.Models.Manufacturing.BowCaseLabelWorkOrderModel>()
+        .Name("grid")
+        .Columns(columns =>
+        {
+            columns.Command(command => command.Edit()).Width(50);
+            columns.Bound(c => c.ID).Hidden();
+            columns.Bound(c => c.WorkOrderNumber).Width(100).HeaderHtmlAttributes(new { style = "text-align: center; overflow: visible; white-space: normal" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(110).SuggestionOperator(FilterType.Contains)));
+            columns.Bound(c => c.CustomBow).ClientTemplate("#= CustomBow ? 'Yes' : 'No' #").Width(100).HeaderHtmlAttributes(new { style = "text-align: center;" }).Filterable(ftb => ftb.Messages(m=>m.IsFalse("No")).Messages(m=>m.IsTrue("Yes")));
+            columns.Bound(c => c.CustomDescription).Width(100).HeaderHtmlAttributes(new { style = "text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(110).SuggestionOperator(FilterType.Contains)));
+            columns.Bound(c => c.CurrentCaseNumber).Width(100).HeaderHtmlAttributes(new { style = "text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(110).SuggestionOperator(FilterType.Contains)));
+            columns.Bound(c => c.Complete).ClientTemplate("#= Complete ? 'Yes' : 'No' #").Width(100).HeaderHtmlAttributes(new { style = "text-align: center;" }).Filterable(ftb => ftb.Messages(m=>m.IsFalse("No")).Messages(m=>m.IsTrue("Yes")));
+        })
+        .HtmlAttributes(new { style = "height: 650px; width: 1200px" })
+        .Editable(editable => editable.Mode(GridEditMode.PopUp))
+        .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(true)
+            .ButtonCount(5))
+        .Navigatable()
+        .Sortable()
+        .Scrollable()
+        .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
+        .Events(events => events.Edit("edit"))
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .Batch(true)
+            .PageSize(50)
+            .ServerOperation(false)
+            .Events(events => events.Error("error_handler").Sync("sync_handler"))
+            .Model(model => model.Id(c => c.ID))
+            .Read(read => read.Action("BowCaseLabelSetup_Load", "Manufacturing"))
+            .Update(update => update.Action("BowCaseLabelSetup_Update", "Manufacturing"))
+
+    )
+)
+
+<style>
+    .k-widget {
+        font-size: 13px
+    }
+
+    .k-grid {
+        font-size: 9px;
+    }
+
+    .k-operator-hidden label {
+        display: block;
+      }
+</style>
+
+<script>
+    $(function () {
+        //Notice that the Name() of the Grid is used to get its client-side instance.
+        var grid = $("#grid").data("kendoGrid");
+    });
+
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+
+            $("#window").data("kendoWindow").center().title("Modify Bow Case Label Setup").content(message + '<br /><br /><button id="closeButton" onclick="closeWindow()" class="k-button">Close</button>').open();
+            $("#undo").hide();
+        }
+    }
+
+    function edit(e) {
+        e.container.find('#ID').hide();
+        $("label[for='ID']").hide();
+        e.container.find('#WorkOrder').hide();
+        $("label[for='WorkOrder']").hide();
+    }
+
+    function sync_handler(e) {
+        this.read();
+    }
+
+    function onClose() {
+        $("#undo").show();
+    }
+
+    function closeWindow() {
+        $("#window").data("kendoWindow").close();
+    }
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

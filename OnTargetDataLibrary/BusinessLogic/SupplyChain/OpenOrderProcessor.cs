@@ -34,7 +34,9 @@ namespace OnTargetDataLibrary.BusinessLogic.SupplyChain
 		                    pepperiorderdetail.CustomBowHand,
 		                    pepperiorderdetail.CustomBowDrawWeight,
 		                    pepperiorderdetail.CustomBowRiserColor,
-		                    pepperiorderdetail.CustomBowLimbColor
+		                    pepperiorderdetail.CustomBowLimbColor,
+							pepperiorderdetail.CustomBowGrip,
+							pepperiorderdetail.CustomBowOrbit
 	                    FROM so_order_item_dtl dtl LEFT JOIN so_order_hdr hdr ON dtl.sodtl_order_no=hdr.sohdr_order_no
 		                    LEFT JOIN itm_loi_itemhdr ON dtl.sodtl_item_code=loi_itemcode
 		                    LEFT JOIN not_tns_transaction_notes ON dtl.sodtl_order_no=tns_document_no 
@@ -54,7 +56,9 @@ namespace OnTargetDataLibrary.BusinessLogic.SupplyChain
 						                    pod.CustomBowHand,
 						                    pod.CustomBowDrawWeight,
 						                    pod.CustomBowRiserColor,
-						                    pod.CustomBowLimbColor
+						                    pod.CustomBowLimbColor,
+											pod.CustomBowGrip,
+											pod.CustomBowOrbit
 						                    FROM [RVWDB].DataWarehouse.dbo.Pepperi_OrderDetail pod
 						                    WHERE pod.PepperiOrderNum = dbo.fn_StripChars(dtl.sodtl_order_no, '^--=0-9') 
 						                    AND	pod.ItemCode = dtl.sodtl_item_code

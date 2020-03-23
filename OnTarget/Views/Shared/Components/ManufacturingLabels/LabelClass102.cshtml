@@ -1,0 +1,73 @@
+﻿@model OnTarget.Models.Manufacturing.ManufacturingLabelsViewModel
+
+<p style="color:black">Manufacturing Stocking Label (102)</p>
+
+<label class="control-label">Part Number</label>
+
+<br />
+
+@(Html.Kendo().AutoComplete()
+             .Name("PartNumber")
+             .DataTextField("PartNumber")
+             .Filter("contains")
+             .Placeholder("Enter Part Number...")
+             .MinLength(3)
+             .HtmlAttributes(new { required = "required", style = "width:50%;height:50px" })
+             .DataSource(source =>
+             {
+                 source
+                        .Read(read =>
+                        {
+                            read.Action("SearchPartNumbers", "Manufacturing")
+                            .Data("onAdditionalData");
+                        })
+             .ServerFiltering(true);
+            })
+)
+
+<br />
+
+<span class="k-invalid-msg" data-for="PartNumber" style="width: 500px; display:inline-block;"></span>
+
+<br />
+<br />
+
+<label asp-for="Quantity" class="control-label"></label>
+<input asp-for="Quantity" type="text" value="" style="width: 175px" class="form-control" required placeholder="Enter a Quantity" title="Please Enter a Quantity" oninvalid="this.setCustomValidity('Please Enter a Quantity')" oninput="this.setCustomValidity('')">
+<span asp-validation-for="Quantity" class="text-danger" style="width: 500px; display:block;"></span>
+
+<br />
+<br />
+
+<label asp-for="NumberOfCopies" class="control-label"></label>
+<input asp-for="NumberOfCopies" type="text" value="1" style="width: 100px" class="form-control" required>
+<span asp-validation-for="NumberOfCopies" class="text-danger" style="width: 500px; display:block;"></span>
+
+<br />
+<br />
+
+<label class="control-label">Printer</label>
+<select asp-for="SelectedPrinterID" asp-items="@Model.LabelPrinters" class="form-control" style="height: 60px;" required title="Please Select a Printer" oninvalid="this.setCustomValidity('Please Select a Printer')" oninput="this.setCustomValidity('')">
+    <option value="" selected>Select Printer</option>
+</select>
+<span asp-validation-for="SelectedPrinterID" class="text-danger" style="width: 500px; display: block;"></span>
+
+<br />
+<br />
+
+<div class="form-group">
+    <input type="submit" value="Print Label(s)" class="btn btn-primary" />
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
+<script src="~/lib/kendo-ui/js/kendo.all.min.js"></script>
+<script src="~/lib/kendo-ui/js/kendo.aspnetmvc.min.js"></script>

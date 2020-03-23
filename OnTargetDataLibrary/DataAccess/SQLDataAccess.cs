@@ -70,12 +70,58 @@ namespace OnTargetDataLibrary.DataAccess
             }
         }
 
+        public static int InsertDataSCMDB<T>(string sql, T data)
+        {
+            string databaseConnection = "SCMDBConnection";
+
+            using (IDbConnection cnn = new SqlConnection(GetConnectionString(databaseConnection)))
+            {
+                return cnn.Execute(sql, data);
+            }
+        }
+
+        public static int UpdateDataSCMDB<T>(string sql, T data)
+        {
+            string databaseConnection = "SCMDBConnection";
+
+            using (IDbConnection cnn = new SqlConnection(GetConnectionString(databaseConnection)))
+            {
+                return cnn.Execute(sql, data);
+            }
+        }
+
         public static List<T> LoadDataBTIntranet<T>(string sql, DynamicParameters p, string databaseConnection)
         {
            
             using (IDbConnection cnn = new MySqlConnection(GetConnectionString(databaseConnection)))
             {
                 return cnn.Query<T>(sql, p, commandType: CommandType.Text).ToList();
+            }
+        }
+
+        public static int InsertDataBTIntranet<T>(string sql, T data, string databaseConnection)
+        {
+           
+            using (IDbConnection cnn = new MySqlConnection(GetConnectionString(databaseConnection)))
+            {
+                return cnn.Execute(sql, data);
+            }
+        }
+
+        public static int UpdateDataBTIntranet<T>(string sql, T data, string databaseConnection)
+        {
+            using (IDbConnection cnn = new MySqlConnection(GetConnectionString(databaseConnection)))
+            {
+                return cnn.Execute(sql, data);
+            }
+        }
+
+        public static int DeleteDataBTIntranet<T>(string sql, T data, string databaseConnection)
+        {
+           
+            using (IDbConnection cnn = new MySqlConnection(GetConnectionString(databaseConnection)))
+            {
+                return cnn.Execute(sql, data);
             }
         }
     }

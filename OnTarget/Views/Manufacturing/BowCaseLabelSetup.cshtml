@@ -1,0 +1,150 @@
+﻿@model OnTarget.Models.Manufacturing.BowCaseLabelWorkOrderModel
+
+@{
+    ViewData["Title"] = "Bow Case Label Setup";
+}
+
+<br />
+
+<h1>Bow Case Label Setup</h1>
+
+<br />
+
+<div class="row">
+    <div class="col-md-10">
+
+        <form kendo-validator="true" asp-action="BowCaseLabelsSetup" id="BowCaseLabelSetup" method="post" asp-controller="Manufacturing">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-6">
+
+                            <label class="control-label">Enter Work Order Number to Setup for Case Label Printing:</label>
+
+                            @(Html.Kendo().AutoComplete()
+                                  .Name("WorkOrderNumber")
+                                  .DataTextField("WorkOrderNumber")
+                                  .Filter("contains")
+                                  .Placeholder("Enter Work Order Number...")
+                                  .MinLength(6)
+                                  .HtmlAttributes(new { required = "required", style = "width:50%;height:50px" })
+                                  .DataSource(source =>
+                                  {
+                                      source
+                                             .Read(read =>
+                                             {
+                                                 read.Action("SearchWorkOrderNumbers", "Manufacturing")
+                                                 .Data("onAdditionalWorkOrderNumberData");
+                                             })
+                                  .ServerFiltering(true);
+                                 })
+                            )
+
+                            <br />
+
+                            <span class="k-invalid-msg" data-for="WorkOrderNumber" style="width: 500px; display:inline-block;"></span>
+
+                            <br />
+                            <br />
+
+                            <label asp-for="CustomBow" class="control-label"></label><br />
+                            <input asp-for="CustomBow" type="radio" onclick="javascript:yesNoCustom();" name="CustomBow" id="yesCheck" value=true> Yes<br>
+                            <input asp-for="CustomBow" type="radio" onclick="javascript:yesNoCustom();" name="CustomBow" id="noCheck" value=false> No<br>
+                            <span asp-validation-for="CustomBow" class="text-danger" style="width: 500px; display:block;"></span>
+
+                            <br />
+
+                            <div id="ifYes" style="display:none">
+                                <label asp-for="CustomDescription" class="control-label"></label>
+                                <input asp-for="CustomDescription" type="text" style="width: 400px" class="form-control" placeholder="Enter the Description for the Custom Bow">
+                                <span asp-validation-for="CustomDescription" class="text-danger" style="width: 500px; display:block;"></span>
+                            </div>
+
+                            <br />
+
+                            <div class="form-group">
+                                <input type="submit" value="Create" class="btn btn-primary" />
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (ViewData["Messages"] != null)
+{
+
+    @(Html.Kendo().Window()
+    .Name("window")
+    .Draggable()
+    .Resizable()
+    .Width(500)
+    .Actions(actions => actions.Close())
+    .Events(ev => ev.Close("onClose"))
+    .Events(eve => eve.Activate("centerKendoWindow"))
+    )
+
+    <script>
+
+        $(document).ready(function () {
+            $("#undo").bind("click", function () {
+                $("#window").data("kendoWindow").open();
+                $("#undo").hide();
+            });
+
+        });
+
+        function onClose() {
+            $("#undo").show();
+        }
+
+        function centerKendoWindow(e) {
+
+            this.center();
+            this.title("Bow Case Label Setup");
+            this.content("@ViewData["Messages"]" + '<br /><br /><button id="closeButton" onclick="closeWindow()" class="k-button">Close</button>');
+        }
+
+        function closeWindow() {
+                $("#window").data("kendoWindow").close();
+        }
+
+    </script>
+
+}
+
+
+<script>
+
+    function yesNoCustom() {
+        if (document.getElementById('yesCheck').checked) {
+            document.getElementById('ifYes').style.display = 'block';
+        }
+        else document.getElementById('ifYes').style.display = 'none';
+
+    }
+
+    function onAdditionalWorkOrderNumberData() {
+        return {
+            text: $("#WorkOrderNumber").val()
+        };
+    }
+
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
+<script src="~/lib/kendo-ui/js/kendo.all.min.js"></script>

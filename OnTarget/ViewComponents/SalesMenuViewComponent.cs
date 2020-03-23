@@ -10,7 +10,7 @@ namespace OnTarget.ViewComponents
 {
     public class SalesMenuViewComponent : ViewComponent
     {
-        public async Task<IViewComponentResult> InvokeAsync()
+        public IViewComponentResult Invoke()
         {
 
             SalesMenuViewModel salesmenu = new SalesMenuViewModel();

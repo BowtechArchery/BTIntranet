@@ -9,6 +9,19 @@
 
 <h1>Exclusion Items</h1>
 
+<br />
+
+@(Html.Kendo().Window()
+    .Name("window")
+    .Draggable()
+    .Resizable()
+    .Width(500)
+    .Actions(actions => actions.Close())
+    .Events(ev => ev.Close("onClose"))
+    .Visible(false)
+    
+)
+
 @(Html.Kendo().Grid<OnTarget.Models.SupplyChain.ExclusionItemModel>()
         .Name("grid")
         .Columns(columns =>
@@ -17,36 +30,47 @@
             columns.Bound(c => c.ItemDesc).Width(100);
             columns.Command(command => command.Destroy()).Width(30);
         })
-        .HtmlAttributes(new { style = "height: 650px;" })
+        .HtmlAttributes(new { style = "height: 650px; width: 700px" })
         .ToolBar(toolbar =>
         {
             toolbar.Create();
             toolbar.Save();
-        })
-        .Editable(editable => editable.Mode(GridEditMode.InCell))
-        .Pageable(pageable => pageable
-            .Refresh(true)
-            .PageSizes(true)
-            .ButtonCount(5))
-        .Navigatable()
-        .Sortable()
-        .Scrollable()
-        .DataSource(dataSource => dataSource
-            .Ajax()
-            .Batch(true)
-            .PageSize(50)
-            .ServerOperation(false)
-            .Events(events => events.Error("error_handler").Sync("sync_handler"))
-            .Model(model => {
-                model.Id(c => c.ItemCode);
-                model.Field(c => c.ItemDesc).Editable(false);
             })
-            .Create("ExclusionItems_Insert", "SupplyChain")
+            .Editable(editable => editable.Mode(GridEditMode.InCell))
+            .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(true)
+                .ButtonCount(5))
+            .Navigatable()
+            .Sortable()
+            .Scrollable()
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .Batch(true)
+                .PageSize(50)
+                .ServerOperation(false)
+                .Events(events => events.Error("error_handler").Sync("sync_handler"))
+                .Model(model =>
+                {
+                    model.Id(c => c.ItemCode);
+                    model.Field(c => c.ItemDesc).Editable(false);
+                })
+                .Create("ExclusionItems_Insert", "SupplyChain")
             .Read("ExclusionItems_Load", "SupplyChain")
             //.Update("ExclusionItems_Update", "SupplyChain")
             .Destroy("ExclusionItems_Destroy", "SupplyChain")
     )
 )
+
+<style>
+    .k-widget {
+        font-size: 13px
+    }
+
+    .k-grid {
+        font-size: 9px;
+    }
+</style>
 
 <script>
     $(function () {
@@ -64,12 +88,22 @@
                     });
                 }
             });
-            alert(message);
+
+            $("#window").data("kendoWindow").center().title("Exclusion Items").content(message + '<br /><br /><button id="closeButton" onclick="closeWindow()" class="k-button">Close</button>').open();
+            $("#undo").hide();
         }
     }
 
     function sync_handler(e) {
         this.read();
+    }
+
+    function onClose() {
+        $("#undo").show();
+    }
+
+    function closeWindow() {
+            $("#window").data("kendoWindow").close();
     }
 
 </script>

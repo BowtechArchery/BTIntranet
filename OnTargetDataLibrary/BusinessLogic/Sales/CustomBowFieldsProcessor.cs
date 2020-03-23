@@ -20,7 +20,9 @@ namespace OnTargetDataLibrary.BusinessLogic.Sales
 	                          pod.CustomBowHand, 
 	                          pod.CustomBowDrawWeight,
 	                          pod.CustomBowRiserColor, 
-	                          pod.CustomBowLimbColor
+	                          pod.CustomBowLimbColor,
+                              pod.CustomBowGrip,
+                              pod.CustomBowOrbit
                         FROM [RVWDB].[DataWarehouse].dbo.Pepperi_OrderDetail pod
                         WHERE CONVERT(VARCHAR(25), pod.PepperiOrderNum) IN (SELECT DISTINCT dbo.fn_StripChars(soh.sohdr_order_no,'^--=0-9')
 													                        FROM so_order_hdr soh
@@ -28,12 +30,13 @@ namespace OnTargetDataLibrary.BusinessLogic.Sales
 													                        WHERE soid.sodtl_item_code LIKE '40000%'
 													                        AND soh.sohdr_order_status IN ('FR', 'AM', 'DR'))
                         AND pod.ItemCode LIKE '40000%'
+                        AND pod.RevisionNum = 0
                         ORDER BY PepperiOrderNum;";
 
             return SQLDataAccess.LoadDataSCMDB<CustomBowFieldModel>(sql, p);
         }
 
-        public static int UpdateCustomBowFields(string indexKey, string customBowModel, string customBowHand, string customBowDrawWeight, string customBowRiserColor, string customBowLimbColor)
+        public static int UpdateCustomBowFields(string indexKey, string customBowModel, string customBowHand, string customBowDrawWeight, string customBowRiserColor, string customBowLimbColor, string customBowGrip, string customBowOrbit)
         {
             CustomBowFieldModel data = new CustomBowFieldModel
             {
@@ -42,7 +45,9 @@ namespace OnTargetDataLibrary.BusinessLogic.Sales
                 CustomBowHand = customBowHand,
                 CustomBowDrawWeight = customBowDrawWeight,
                 CustomBowRiserColor = customBowRiserColor,
-                CustomBowLimbColor = customBowLimbColor
+                CustomBowLimbColor = customBowLimbColor,
+                CustomBowGrip = customBowGrip,
+                CustomBowOrbit = customBowOrbit
             };
 
             string sql = @"UPDATE dbo.Pepperi_OrderDetail
@@ -50,7 +55,9 @@ namespace OnTargetDataLibrary.BusinessLogic.Sales
                            CustomBowHand = @CustomBowHand,
                            CustomBowDrawWeight = @CustomBowDrawWeight,
                            CustomBowRiserColor = @CustomBowRiserColor,
-                           CustomBowLimbColor = @CustomBowLimbColor
+                           CustomBowLimbColor = @CustomBowLimbColor,
+                           CustomBowGrip = @CustomBowGrip,
+                           CustomBowOrbit = @CustomBowOrbit
                            WHERE IndexKey = @IndexKey;";
 
             return SQLDataAccess.UpdateDataDatawarehouse(sql, data);

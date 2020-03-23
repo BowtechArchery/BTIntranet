@@ -16,5 +16,7 @@ namespace OnTarget.Models.SupplyChain
 
         public int Quantity { get; set; }
 
+        public string PartType { get; set; }
+
     }
 }

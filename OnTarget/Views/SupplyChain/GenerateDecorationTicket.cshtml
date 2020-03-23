@@ -1,4 +1,4 @@
-﻿@model OnTarget.Models.SupplyChain.DecorationTicketModel
+﻿@model OnTarget.Models.SupplyChain.DecorationTicketViewModel
 
 @{
     ViewData["Title"] = "Generate Decoration Tickets";
@@ -19,7 +19,7 @@
             <div class="form-group">
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-sm-3">
                             <label asp-for="WorkOrders" class="control-label"></label>
                             <textarea asp-for="WorkOrders" rows="20" cols="25" class="form-control"></textarea>
                             <span asp-validation-for="WorkOrders" class="text-danger" style="width: 500px; display:block;"></span>
@@ -41,7 +41,7 @@
                             </div>
 
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-sm-5">
                             <label asp-for="CompletionDate" class="control-label"></label>
                             @(Html.Kendo().DatePicker()
                                 .Name("CompletionDate")
@@ -60,11 +60,43 @@
 
 @if (ViewData["Messages"] != null)
 {
-    <script type="text/javascript">
-        window.onload = function () {
-            alert("@ViewData["Messages"]")
 
-            };
+    @(Html.Kendo().Window()
+    .Name("window")
+    .Draggable()
+    .Resizable()
+    .Width(500)
+    .Actions(actions => actions.Close())
+    .Events(ev => ev.Close("onClose"))
+    .Events(eve => eve.Activate("centerKendoWindow"))
+    )
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#undo").bind("click", function () {
+                $("#window").data("kendoWindow").open();
+                $("#undo").hide();
+            });
+
+        });
+
+        function onClose() {
+            $("#undo").show();
+        }
+
+        function centerKendoWindow(e) {
+
+            this.center();
+            this.title("Decoration Tickets");
+            this.content("@ViewData["Messages"]" + '<br /><br /><button id="closeButton" onclick="closeWindow()" class="k-button">Close</button>');
+        }
+
+        function closeWindow() {
+             $("#window").data("kendoWindow").close();
+        }
+
     </script>
 }
 

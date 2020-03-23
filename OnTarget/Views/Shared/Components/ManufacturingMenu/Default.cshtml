@@ -1,0 +1,118 @@
+﻿@model OnTarget.Models.Manufacturing.ManufacturingMenuViewModel
+
+<br />
+<br />
+<br />
+
+<nav class="navbar navbar-expand-lg">
+
+    <ul class="nav flex-column flex-nowrap overflow-hidden">
+
+        <li class="active">
+            <h6>Manufacturing Menu</h6>
+        </li>
+
+        @*<li class="nav-item">
+            <a class="nav-link text-truncate" href="#"><i class="fa fa-home"></i> <span class="d-none d-sm-inline">Overview</span></a>
+        </li>*@
+
+        <li class="nav-item">
+            <a class="nav-link collapsed text-truncate nav-link-sidemenu" href="#submenu1" data-toggle="collapse" data-target="#submenu1"><i class="fa fa-table"></i> <span class="d-none d-sm-inline">Reports</span></a>
+            @*<div class="collapse" id="submenu1" aria-expanded="false">
+                <ul class="flex-column pl-2 nav">
+                    <li class="nav-item"><a class="nav-link py-0" href="#"><span>Orders</span></a></li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed py-1" href="#submenu1sub1" data-toggle="collapse" data-target="#submenu1sub1"><span>Customers</span></a>
+                        <div class="collapse" id="submenu1sub1" aria-expanded="false">
+                            <ul class="flex-column nav pl-4">
+                                <li class="nav-item">
+                                    <a class="nav-link p-1" href="#">
+                                        <i class="fa fa-fw fa-clock-o"></i> Daily
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link p-1" href="#">
+                                        <i class="fa fa-fw fa-dashboard"></i> Dashboard
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link p-1" href="#">
+                                        <i class="fa fa-fw fa-bar-chart"></i> Charts
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link p-1" href="#">
+                                        <i class="fa fa-fw fa-compass"></i> Areas
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>*@
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed text-truncate nav-link-sidemenu" href="#submenu2" data-toggle="collapse" data-target="#submenu2"><i class="fa fa-table"></i> <span class="d-none d-sm-inline">Tools</span></a>
+            <div class="collapse" id="submenu2" aria-expanded="false">
+                <ul class="flex-column pl-2 nav">
+
+                    @*<li class="nav-item">
+                        <a class="nav-link py-0" href="#"><span>Orders</span></a>
+                    </li>*@
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed py-1 nav-link-sidemenu" href="#submenu2sub1" data-toggle="collapse" data-target="#submenu2sub1"><span>&nbsp;&nbsp;Bow Case Labels</span></a>
+
+                        <div class="collapse" id="submenu2sub1" aria-expanded="false">
+                            <ul class="flex-column nav pl-4">
+                                <li class="nav-item">
+                                    <a class="dropdown-item" asp-area="" asp-controller="Manufacturing" asp-action="BowCaseLabelSetupModify">Modify Case Label Setup</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="dropdown-item" asp-area="" asp-controller="Manufacturing" asp-action="BowCaseLabelsSelectWorkOrder">Print Case Labels</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="dropdown-item" asp-area="" asp-controller="Manufacturing" asp-action="ReprintBowCaseLabel">Reprint Case Labels</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="dropdown-item" asp-area="" asp-controller="Manufacturing" asp-action="BowCaseLabelSetup">Setup Case Labels</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" asp-area="" asp-controller="Manufacturing" asp-action="ManufacturingLabels">Manufacturing Labels</a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" asp-area="" asp-controller="Manufacturing" asp-action="WorkOrderSerialModify">Work Order Serial Modify</a>
+                    </li>
+
+                </ul>
+            </div>
+        </li>
+
+        @*<li class="nav-item">
+            <a class="nav-link text-truncate" href="#"><i class="fa fa-bar-chart"></i> <span class="d-none d-sm-inline">Analytics</span></a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link text-truncate" href="#"><i class="fa fa-download"></i> <span class="d-none d-sm-inline">Export</span></a>
+        </li>*@
+
+    </ul>
+</nav>
+
+
+<style>
+    .nav-link-sidemenu[data-toggle].collapsed:after {
+        content: " ▾";
+    }
+
+    .nav-link-sidemenu[data-toggle]:not(.collapsed):after {
+        content: " ▴";
+    }
+</style>
+

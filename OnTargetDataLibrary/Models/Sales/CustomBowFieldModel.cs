@@ -15,5 +15,7 @@ namespace OnTargetDataLibrary.Models.Sales
         public string CustomBowDrawWeight { get; set; }
         public string CustomBowRiserColor { get; set; }
         public string CustomBowLimbColor { get; set; }
+        public string CustomBowGrip { get; set; }
+        public string CustomBowOrbit { get; set; }
     }
 }

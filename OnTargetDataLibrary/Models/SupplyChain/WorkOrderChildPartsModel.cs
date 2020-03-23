@@ -14,5 +14,7 @@ namespace OnTargetDataLibrary.Models.SupplyChain
         public string ItemDescription { get; set; }
 
         public int Quantity { get; set; }
+
+        public string PartType { get; set; }
     }
 }

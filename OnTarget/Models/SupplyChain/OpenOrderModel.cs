@@ -78,5 +78,11 @@ namespace OnTarget.Models.SupplyChain
         [Display(Name = "Custom Bow Limb Color")]
         public string CustomBowLimbColor { get; set; }
 
+        [Display(Name = "Custom Bow Grip")]
+        public string CustomBowGrip { get; set; }
+
+        [Display(Name = "Custom Bow Orbit")]
+        public string CustomBowOrbit { get; set; }
+
     }
 }

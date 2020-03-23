@@ -6,36 +6,52 @@
 }
 
 <br />
+
 <h1>View Open Orders</h1>
+
+<br />
+
+@(Html.Kendo().Window()
+    .Name("window")
+    .Draggable()
+    .Resizable()
+    .Width(500)
+    .Actions(actions => actions.Close())
+    .Events(ev => ev.Close("onClose"))
+    .Visible(false)
+
+)
 
 @(Html.Kendo().Grid<OnTarget.Models.SupplyChain.OpenOrderModel>
     ()
     .Name("grid")
     .Columns(columns =>
     {
-    columns.Bound(c => c.SalesOrderNumber).Width(120).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
-    columns.Bound(c => c.SalesOrderLineNumber).Width(120).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
-    columns.Bound(c => c.ItemCode).Width(120).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
-    columns.Bound(c => c.ItemDescription).Width(225).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(175).SuggestionOperator(FilterType.Contains)));
-    columns.Bound(c => c.CustomerNumber).Width(120).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
-    columns.Bound(c => c.CustomerName).Width(120).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
-    columns.Bound(c => c.DealerStatus).Width(120).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
-    columns.Bound(c => c.OrderStatus).Width(120).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
-    columns.Bound(c => c.Priority).Width(120).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
-    columns.Bound(c => c.AllocatedQuantity).Width(120).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
-    columns.Bound(c => c.OpenQuantity).Width(120).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
-    columns.Bound(c => c.OrderDate).Width(120).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
-    columns.Bound(c => c.RequiredDate).Width(120).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
-    columns.Bound(c => c.PromiseDate).Width(120).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
-    columns.Bound(c => c.ModifiedDate).Width(120).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
-    columns.Bound(c => c.DNSBefore).Width(120).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
-    columns.Bound(c => c.Commments).Width(120).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
-    columns.Bound(c => c.WorkOrderNumber).Width(120).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
-    columns.Bound(c => c.CustomBowModel).Width(120).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
-    columns.Bound(c => c.CustomBowHand).Width(120).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
-    columns.Bound(c => c.CustomBowDrawWeight).Width(120).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
-    columns.Bound(c => c.CustomBowRiserColor).Width(120).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
-    columns.Bound(c => c.CustomBowLimbColor).Width(120).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.SalesOrderNumber).Width(120).HeaderHtmlAttributes(new { style = "text-align: center; overflow: visible; white-space: normal" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.SalesOrderLineNumber).Width(120).HeaderHtmlAttributes(new { style = "text-align: center; overflow: visible; white-space: normal" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.ItemCode).Width(120).HeaderHtmlAttributes(new { style = "text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.ItemDescription).Width(225).HeaderHtmlAttributes(new { style = "text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(175).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.CustomerNumber).Width(120).HeaderHtmlAttributes(new { style = "text-align: center; overflow: visible; white-space: normal" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.CustomerName).Width(120).HeaderHtmlAttributes(new { style = "text-align: center; overflow: visible; white-space: normal" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.DealerStatus).Width(120).HeaderHtmlAttributes(new { style = "text-align: center; overflow: visible; white-space: normal" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.OrderStatus).Width(120).HeaderHtmlAttributes(new { style = "text-align: center; overflow: visible; white-space: normal" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.Priority).Width(120).HeaderHtmlAttributes(new { style = "text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.AllocatedQuantity).Width(120).HeaderHtmlAttributes(new { style = "text-align: center; overflow: visible; white-space: normal" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.OpenQuantity).Width(120).HeaderHtmlAttributes(new { style = "text-align: center; overflow: visible; white-space: normal" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.OrderDate).Width(120).HeaderHtmlAttributes(new { style = "text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.RequiredDate).Width(120).HeaderHtmlAttributes(new { style = "text-align: center; overflow: visible; white-space: normal" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.PromiseDate).Width(120).HeaderHtmlAttributes(new { style = "text-align: center; overflow: visible; white-space: normal" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.ModifiedDate).Width(120).HeaderHtmlAttributes(new { style = "text-align: center; overflow: visible; white-space: normal" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.DNSBefore).Width(120).HeaderHtmlAttributes(new { style = "text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.Commments).Width(120).HeaderHtmlAttributes(new { style = "text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.WorkOrderNumber).Width(120).HeaderHtmlAttributes(new { style = "text-align: center; overflow: visible; white-space: normal" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.CustomBowModel).Width(120).HeaderHtmlAttributes(new { style = "text-align: center; overflow: visible; white-space: normal" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.CustomBowHand).Width(120).HeaderHtmlAttributes(new { style = "text-align: center; overflow: visible; white-space: normal" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.CustomBowDrawWeight).Width(120).HeaderHtmlAttributes(new { style = "text-align: center; overflow: visible; white-space: normal" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.CustomBowRiserColor).Width(120).HeaderHtmlAttributes(new { style = "text-align: center; overflow: visible; white-space: normal" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.CustomBowLimbColor).Width(120).HeaderHtmlAttributes(new { style = "text-align: center; overflow: visible; white-space: normal" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.CustomBowGrip).Width(120).HeaderHtmlAttributes(new { style = "text-align: center; overflow: visible; white-space: normal" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+    columns.Bound(c => c.CustomBowOrbit).Width(120).HeaderHtmlAttributes(new { style = "text-align: center; overflow: visible; white-space: normal" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
     })
     .HtmlAttributes(new { style = "height: 700px; width: 1500px" })
     .ToolBar(tools => tools.Excel())
@@ -47,9 +63,9 @@
     .Sortable()
     .Scrollable()
     .Excel(excel => excel
-    .FileName("Open Orders.xlsx")
-    .Filterable(true)
-    .ProxyURL(Url.Action("Excel_Export_Save", "SuppyChain"))
+        .FileName("Open Orders.xlsx")
+        .Filterable(true)
+        .ProxyURL(Url.Action("Excel_Export_Save", "SuppyChain"))
     )
     .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
     .DataSource(dataSource => dataSource
@@ -62,32 +78,56 @@
     .Model(model => model.Id(c => c.SalesOrderNumber))
     .Read(read => read.Action("OpenOrders_Load", "SupplyChain"))
     )
-    )
+)
 
 
-    <script>
-        $(function () {
-            //Notice that the Name() of the Grid is used to get its client-side instance.
-            var grid = $("#grid").data("kendoGrid");
-        });
-
-        function error_handler(e) {
-            if (e.errors) {
-                var message = "Errors:\n";
-                $.each(e.errors, function (key, value) {
-                    if ('errors' in value) {
-                        $.each(value.errors, function () {
-                            message += this + "\n";
-                        });
-                    }
-                });
-                alert(message);
-            }
-        }
-
-    </script>
-
-
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<style>
+    .k-widget {
+        font-size: 13px
     }
+
+    .k-grid {
+        font-size: 9px;
+    }
+</style>
+
+
+<script>
+    $(function () {
+        //Notice that the Name() of the Grid is used to get its client-side instance.
+        var grid = $("#grid").data("kendoGrid");
+    });
+
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+            $("#window").data("kendoWindow").center().title("View Open Orders").content(message + '<br /><br /><button id="closeButton" onclick="closeWindow()" class="k-button">Close</button>').open();
+            $("#undo").hide();
+        }
+    }
+
+    function sync_handler(e) {
+        this.read();
+    }
+
+    function onClose() {
+        $("#undo").show();
+    }
+
+    function closeWindow() {
+        $("#window").data("kendoWindow").close();
+    }
+
+</script>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

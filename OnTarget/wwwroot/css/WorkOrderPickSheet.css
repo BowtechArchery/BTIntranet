@@ -1,0 +1,44 @@
+﻿.header {
+    text-align: center;
+    color: black;
+    padding-bottom: 1px;
+    font-family: Verdana;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    border: 1px solid black;
+    padding: 18px;
+    font-size: 11px;
+    text-align: center;
+    font-family: Verdana;
+}
+
+td {
+    border: 1px solid black;
+    padding: 10px;
+    font-size: 9px;
+    text-align: left;
+    font-family: Verdana;
+}
+
+table th {
+    background-color: black;
+    color: white;
+    font-family: Verdana;
+}
+
+p {
+    font-size: 12px;
+    font-family: Verdana;
+    font-weight: bold;
+}
+
+.pagebreak {
+    clear: both;
+    page-break-after: always;
+}

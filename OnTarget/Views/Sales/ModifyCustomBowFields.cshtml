@@ -14,16 +14,18 @@
         {
             columns.Command(command => command.Edit()).Width(100);
             columns.Bound(c => c.IndexKey).Hidden();
-            columns.Bound(c => c.PepperiOrderNum).Width(225).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains)));
-            columns.Bound(c => c.ItemCode).Width(225).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains)));
-            columns.Bound(c => c.ItemDesc).Width(275).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains)));
-            columns.Bound(c => c.CustomBowModel).Width(225).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains)));
-            columns.Bound(c => c.CustomBowHand).Width(225).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains)));
-            columns.Bound(c => c.CustomBowDrawWeight).Width(235).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains)));
-            columns.Bound(c => c.CustomBowRiserColor).Width(225).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains)));
-            columns.Bound(c => c.CustomBowLimbColor).Width(225).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains)));
+            columns.Bound(c => c.PepperiOrderNum).Width(120).HeaderHtmlAttributes(new { style="text-align: center; overflow: visible; white-space: normal" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+            columns.Bound(c => c.ItemCode).Width(120).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+            columns.Bound(c => c.ItemDesc).Width(175).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(90).SuggestionOperator(FilterType.Contains)));
+            columns.Bound(c => c.CustomBowModel).Width(120).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+            columns.Bound(c => c.CustomBowHand).Width(120).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+            columns.Bound(c => c.CustomBowDrawWeight).Width(120).HeaderHtmlAttributes(new { style="text-align: center; overflow: visible; white-space: normal" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(70).SuggestionOperator(FilterType.Contains)));
+            columns.Bound(c => c.CustomBowRiserColor).Width(150).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(90).SuggestionOperator(FilterType.Contains)));
+            columns.Bound(c => c.CustomBowLimbColor).Width(150).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(90).SuggestionOperator(FilterType.Contains)));
+            columns.Bound(c => c.CustomBowGrip).Width(150).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(90).SuggestionOperator(FilterType.Contains)));
+            columns.Bound(c => c.CustomBowOrbit).Width(150).HeaderHtmlAttributes(new { style="text-align: center;" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").InputWidth(90).SuggestionOperator(FilterType.Contains)));
         })
-        .HtmlAttributes(new { style = "height: 650px; width: 875px" })
+        .HtmlAttributes(new { style = "height: 650px; width: 1450px" })
         .Editable(editable => editable.Mode(GridEditMode.PopUp))
         .Pageable(pageable => pageable
             .Refresh(true)
@@ -47,6 +49,15 @@
     )
 )
 
+<style>
+    .k-widget {
+        font-size: 13px
+    }
+
+    .k-grid {
+        font-size: 9px;
+    }
+</style>
 
 <script>
     $(function () {
@@ -64,7 +75,9 @@
                     });
                 }
             });
-            alert(message);
+
+            $("#window").data("kendoWindow").center().title("Modify Custom Bows").content(message + '<br /><br /><button id="closeButton" onclick="closeWindow()" class="k-button">Close</button>').open();
+            $("#undo").hide();
         }
     }
 
@@ -78,7 +91,14 @@
        e.container.find('#ItemDesc').hide();
        $("label[for='ItemDesc']").hide();
    }
-    
+
+   function onClose() {
+        $("#undo").show();
+   }
+
+   function closeWindow() {
+        $("#window").data("kendoWindow").close();
+   }
 </script>
 
 @section Scripts {
